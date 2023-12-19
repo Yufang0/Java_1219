@@ -41,6 +41,24 @@ public class _1219_1 {
 	
 	}
 	
+	public static int  counts(int [] p) {
+		int count = 0; //計算單個點數重複次數
+		int [] sumCount = new int [3];
+		int maxc = 0; //紀錄重複次數的最大值
+		for(int i=0;i<p.length-1;i++) {
+			count = 0;
+			for(int j=i+1;j<p.length;j++)
+				if(p[i]==p[j])
+					count++;
+			}
+		
+		if (maxc == 1) //重複次數最大值為1，表示至少有一個對子。
+			return(0); //回傳對子的點數
+		else if(maxc==3) //重複次數最大值為3，表示4個點數相同，為豹子。
+			return(1); //為區分開豹子，特地將此相同的點數乘10後回傳。
+		else return(2); //其餘有三個相同點數，或全部不同點數的情況，需重新骰一次，回傳0，在主程式的部分再去判斷。參考line28-29。
+	}
+	
 	//判斷是否為同花
 		public static boolean checkFlush(int [] f) {
 			for(int i=0;i<f.length-1;i++)

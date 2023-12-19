@@ -1,3 +1,4 @@
+//411422259 蕭羽芳
 import java.util.*;
 public class _1219_1 {
 
@@ -11,7 +12,6 @@ public class _1219_1 {
 		do {
 			int temp=(int)(Math.random()*52);
 			if(poker[temp]==0) {
-				System.out.println(temp);
 				face[count] = temp/13; //商數
 				point[count] = temp%13; //餘數
 				printFace(face[count],point[count]);
@@ -20,13 +20,50 @@ public class _1219_1 {
 			}
 		}while(count!=5); //迴圈一直反覆到成功抽出五個不重複的亂數
 		
+		/*int [] face = {1,3,1,1,1}; 
+		int [] point = {0,9,10,11,12};  //假設抽到的牌，確認程式碼正確性*/
+		
 		pokerSort(face,point);
 		System.out.println("=== sorted ===");
 		for(int i=0;  i<5; i++)
 			printFace(face[i],point[i]);
 		
-
+		if(checkFlush(face)) {
+			if(checkStraight(point))
+				System.out.println("Straight Flush  ! ! !");
+			else if(checkRoyal(point))
+				System.out.println("Royal Flush  ! ! !"); }
+		else {
+			if(checkStraight(point))
+				System.out.println("Straight ! ! ");
+			else if(checkRoyal(point))
+				System.out.println("Royal ! ! "); }
+	
 	}
+	
+	//判斷是否為同花
+		public static boolean checkFlush(int [] f) {
+			for(int i=0;i<f.length-1;i++)
+				if(f[i]!=(f[i+1]))
+					return false;
+			return true;
+		}
+		
+	//判斷是否為大順
+	public static boolean checkRoyal(int [] p) {
+		if(p[0]==0 & p[1]==9 & p[2]==10 & p[3]==11 & p[4]==12)
+				return true;
+		return false;
+	}
+	
+	//判斷是否為順子
+	public static boolean checkStraight(int [] p) {
+		for(int i=0;i<p.length-1;i++)
+			if(p[i]!=(p[i+1]-1))
+				return false;
+		return true;
+	}
+	
 	public static void  printFace(int f, int p) {
 		switch(f) {
 		case 0:
@@ -63,8 +100,6 @@ public class _1219_1 {
 					f[i]=f[j];
 					f[j]=temp;
 				}
-					
-				
 	}
 
 }

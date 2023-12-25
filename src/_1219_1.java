@@ -20,8 +20,8 @@ public class _1219_1 {
 			}
 		}while(count!=5); //迴圈一直反覆到成功抽出五個不重複的亂數
 		
-		/*int [] face = {1,3,1,1,1}; 
-		int [] point = {0,9,10,11,12};  //假設抽到的牌，確認程式碼正確性*/
+		/*int [] face = {1,3,4,2,2}; 
+		int [] point = {8,7,7,8,7};  //假設抽到的牌，確認程式碼正確性*/
 		
 		pokerSort(face,point);
 		System.out.println("=== sorted ===");
@@ -35,28 +35,53 @@ public class _1219_1 {
 				System.out.println("Royal Flush  ! ! !"); }
 		else {
 			if(checkStraight(point))
-				System.out.println("Straight ! ! ");
+				System.out.println("Straight ! !");
 			else if(checkRoyal(point))
-				System.out.println("Royal ! ! "); }
+				System.out.println("Royal ! !"); }
+		
+		//Counts(point)回傳值對照表　1:一對、2:兩對、3:三條、4:鐵支、5:葫蘆
+		switch(counts(point)) {
+		case 0:
+			System.out.println("No special card type ...");break;
+		case 1:
+			System.out.println("One Pair !");break;
+		case 2:
+			System.out.println("Two Pairs !");break;
+		case 3:
+			System.out.println("Three of a kind ! !");break;
+		case 4:
+			System.out.println("Four of a kind ! ! !");break;
+		case 5:
+			System.out.println("Full House ! ! !");break;
+		}
 	
 	}
 	
 	public static int  counts(int [] p) {
 		int count = 0; //計算單個點數重複次數
-		int [] sumCount = new int [3];
-		int maxc = 0; //紀錄重複次數的最大值
+		int [] sumCount = {0,0,0,0};
+		//for迴圈在計算每個點數跟此點數後面的點數重複次數
+		//如此數字重複了i次，就會使sumCount[i]++，紀錄重複幾次的點數有幾個。
 		for(int i=0;i<p.length-1;i++) {
 			count = 0;
 			for(int j=i+1;j<p.length;j++)
 				if(p[i]==p[j])
 					count++;
-			}
-		
-		if (maxc == 1) //重複次數最大值為1，表示至少有一個對子。
-			return(0); //回傳對子的點數
-		else if(maxc==3) //重複次數最大值為3，表示4個點數相同，為豹子。
-			return(1); //為區分開豹子，特地將此相同的點數乘10後回傳。
-		else return(2); //其餘有三個相同點數，或全部不同點數的情況，需重新骰一次，回傳0，在主程式的部分再去判斷。參考line28-29。
+			sumCount[count]++;
+		}
+		//sumCount對照表　1:一對[ ,1,0,0]、2:兩對[ ,2,0,0]、3:三條[ ,1,1,0]、4:鐵支[ ,1,1,1]、5:葫蘆[ ,2,1,0] *計算重複0次的忽略
+		if(sumCount[3]==1)
+			return(4);
+		else if(sumCount[2]==1&&sumCount[1]==2)
+			return(5);
+		else if(sumCount[2]==1&&sumCount[1]==1)
+			return(3);
+		else if(sumCount[1]==2)
+			return(2);
+		else if(sumCount[1]==1)
+			return(1);
+		else
+			return(0);
 	}
 	
 	//判斷是否為同花
